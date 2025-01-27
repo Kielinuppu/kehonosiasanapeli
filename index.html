@@ -113,6 +113,7 @@
            max-width: 600px;
            overflow-x: auto;
            padding-bottom: 10px;
+           flex-wrap: wrap; 
        }
 
        .thumbnail {
@@ -130,41 +131,49 @@
        }
 
        @media (max-width: 768px) {
-           .container {
-               padding: 10px;
-           }
+    .container {
+        padding: 10px;
+    }
 
-           .button {
-               padding: 8px 16px;
-               font-size: 14px;
-           }
+    .button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
 
-           h1 {
-               font-size: 1.5em;
-           }
+    h1 {
+        font-size: 1.5em;
+    }
 
-           #nextArrow {
-               width: 100px;
-               height: 100px;
-           }
+    #nextArrow {
+        width: 100px;
+        height: 100px;
+    }
 
-           .thumbnail {
-               width: 60px;
-               height: 60px;
-           }
-       }
+    #thumbnailContainer {
+        max-width: 270px;
+    }
 
-       @media (max-width: 480px) {
-           #nextArrow {
-               width: 75px;
-               height: 75px;
-           }
+    .thumbnail {
+        width: 60px;
+        height: 60px;
+    }
+}
 
-           .thumbnail {
-               width: 50px;
-               height: 50px;
-           }
-       }
+@media (max-width: 480px) {
+    #nextArrow {
+        width: 75px;
+        height: 75px;
+    }
+
+    #thumbnailContainer {
+        max-width: 50px;
+    }
+    
+    .thumbnail {
+        width: 50px;
+        height: 50px;
+    }
+}
    </style>
 </head>
 <body>
@@ -239,21 +248,24 @@
        }
 
        function showNextImage() {
-           if (audioPlaying) return;
-           currentIndex++;
-           if (currentIndex < 6) {
-               audioPlaying = true;
-               nextArrow.classList.add('disabled-arrow');
-               showImage(currentIndex);
-               
-               playAudio(currentGameMode === 'tavutettu' ? audiosTavutettu[currentIndex] : audiosSana[currentIndex], () => {
-                   audioPlaying = false;
-                   nextArrow.classList.remove('disabled-arrow');
-               });
-           } else {
-               showThumbnails();
-           }
-       }
+    if (audioPlaying) return;
+    currentIndex++;
+    if (currentIndex < 6) {
+        audioPlaying = true;
+        nextArrow.classList.add('disabled-arrow');
+        showImage(currentIndex);
+        
+        const audio = new Audio(currentGameMode === 'tavutettu' ? audiosTavutettu[currentIndex] : audiosSana[currentIndex]);
+        audio.play();
+        
+        setTimeout(() => {
+            audioPlaying = false;
+            nextArrow.classList.remove('disabled-arrow');
+        }, 1500);
+    } else {
+        showThumbnails();
+    }
+}
 
        function playAudio(audioSrc, callback) {
            const audio = new Audio(audioSrc);
