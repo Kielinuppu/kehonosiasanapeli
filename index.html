@@ -34,6 +34,7 @@
        }
 
        h1, h2 {
+           font-size: 2em;
            margin-bottom: 20px;
            text-align: center;
            text-transform: uppercase;
@@ -105,21 +106,20 @@
        }
 
        #thumbnailContainer {
-           display: flex;
-           justify-content: center;
-           gap: 10px;
-           margin-top: 20px;
-           width: 100%;
-           max-width: 600px;
-           overflow-x: auto;
-           padding-bottom: 10px;
-           flex-wrap: wrap; 
-       }
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    justify-content: center;
+    margin: 10px auto; /* auto marginit keskittävät */
+    width: 100%;
+    max-width: 600px;
+    place-items: center; /* keskittää itemit soluissa */
+}
 
        .thumbnail {
-           width: 80px;
-           height: 80px;
-           flex-shrink: 0;
+           width: 100px;
+           height: 100px;
+           aspect-ratio: 1 / 1;
            object-fit: cover;
            cursor: pointer;
            transition: transform 0.2s;
@@ -154,24 +154,22 @@
     }
 
     .thumbnail {
-        width: 60px;
-        height: 60px;
+        width: 75px;
+        height: 75px;
     }
 }
 
 @media (max-width: 480px) {
-    #nextArrow {
-        width: 75px;
-        height: 75px;
-    }
-
     #thumbnailContainer {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
         max-width: 250px;
     }
     
     .thumbnail {
-        width: 70px;
-        height: 70px;
+        width: 75px;
+        height: 75px;
     }
 }
    </style>
@@ -288,7 +286,7 @@
 
        function showThumbnails() {
            nextArrow.style.display = 'none';
-           thumbnailContainer.style.display = 'flex';
+           thumbnailContainer.style.display = 'grid';
            thumbnailContainer.innerHTML = '';
            const images = currentGameMode === 'tavutettu' ? imagesTavutettu : imagesSana;
            const audios = currentGameMode === 'tavutettu' ? audiosTavutettu : audiosSana;
